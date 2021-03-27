@@ -1,0 +1,34 @@
+#logo {
+  text-align: center;
+}
+
+#logo img {
+  max-width: 260px;
+}
+
+#navBar {
+  width: 100%;
+}
+
+#navBar ul {
+}
+
+#navBar ul li {
+  list-style: none;
+  /* padding: 0.1rem; */
+}
+
+#navBar ul li a {
+  color: white;
+  text-decoration: none;
+  padding: 1rem;
+  display: block;
+  transition: transform 0.2s;
+  border-radius: 5px;
+}
+
+#navBar ul li a:hover {
+  background-color: tomato;
+  transform: translateY(-2px);
+  color: rgba(255, 255, 255, .8);
+}

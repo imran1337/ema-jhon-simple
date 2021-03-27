@@ -1,0 +1,11 @@
+body {
+  overflow-x: hidden;
+}
+
+.bg-gold {
+  background-color: goldenrod !important;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}

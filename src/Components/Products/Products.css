@@ -1,0 +1,21 @@
+.product_title{
+    max-width: 60rem;
+    min-width: 20rem;
+}
+
+.products{
+    max-width: 100%;
+}
+
+
+
+.btn{
+    width: 150px;
+}
+
+/* 
+.products img {
+    width: 260px !important;
+    /* because tachyons default max-width  */
+    /* max-width: 260px !important; */
+/* } */
