@@ -2,14 +2,14 @@ import React from "react";
 
 const Cart = (props) => {
   const { cart } = props;
-  // console.log(cart);
+  console.log(cart);
   console.log(props);
   const beforeShipTotalPrice =
     parseFloat(
       cart.map((pd) => pd.price).reduce((p = 0, c) => p + c, 0) *
-        parseFloat(cart.map((pd) => pd.quantity))
-    ).toFixed(2) | 0;
-
+        parseFloat(cart.map((pd) => pd.quantity || 1))
+    ).toFixed(2) | 0 ;
+      console.log(beforeShipTotalPrice);
   const shipCost = parseFloat(
     cart.map((pd) => pd.shipping).reduce((p = 0, c) => p + c, 0) *
       parseFloat(cart.map((pd) => pd.quantity))

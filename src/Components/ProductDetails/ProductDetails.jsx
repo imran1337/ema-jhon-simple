@@ -1,16 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./ProductDetails.css";
-import fakeData from "./../../Resources/fakeData/index";
 import { Products } from "../Products/Products";
 const ProductDetails = () => {
   const { key } = useParams();
+  const [signleProduct, setSignleProduct] = useState([]);
 
-  const product = fakeData.find((pd) => pd.key === key);
+  useEffect(() => {
+    fetch(`https://fierce-shelf-90636.herokuapp.com/product/${key}`)
+      .then((res) => res.json())
+      .then((data) => setSignleProduct(data));
+  }, [key]);
 
-//   const { name, img, price, seller, star, features } = product;
+  const product = signleProduct;
 
-//   console.log(product);
+  //   const { name, img, price, seller, star, features } = product;
+
+  //   console.log(product);
 
   return (
     <div className="d-flex flex-column container">
@@ -33,7 +39,7 @@ const ProductDetails = () => {
             );
           })) || <h3>Features not available</h3>}
       </ol> */}
-      <Products product={product} showAddToCartBtn={false}/>
+      <Products product={product} showAddToCartBtn={false} />
     </div>
   );
 };

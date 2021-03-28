@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./Shop.css";
-import fakeData from "./../../Resources/fakeData/index";
 import { Products } from "../Products/Products";
 import Cart from "../Cart/Cart";
 import { Link } from "react-router-dom";
@@ -77,20 +76,32 @@ import {
 // };
 
 export const Shop = () => {
-  const [products, setProducts] = useState(fakeData);
+  const [products, setProducts] = useState([]);
 
   const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    fetch("https://fierce-shelf-90636.herokuapp.com/products")
+      .then((res) => res.json())
+      .then((data) => {
+        setProducts(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
     const savedCart = getDatabaseCart();
     const productKeys = Object.keys(savedCart);
     console.log(productKeys);
-    const previewsCart = productKeys.map((key) => {
-      const product = fakeData.find((pd) => pd.key === key);
-      product.quantity = savedCart[key];
-      return product;
-    });
-    setCart(previewsCart);
+    fetch("https://fierce-shelf-90636.herokuapp.com/productsByKeys", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(productKeys),
+    })
+      .then((res) => res.json())
+      .then((data) => setCart(data))
+      .catch((err) => console.log(err));
+    console.log('useeffect runed');
   }, []);
 
   const handleAddProduct = (productForBtn) => {
@@ -117,7 +128,7 @@ export const Shop = () => {
       <div className="row justify-content-center">
         {/* Product container */}
         <div className="col-7">
-          {products.map((pd) => {
+          { products.map((pd) => {
             return (
               <Products
                 product={pd}

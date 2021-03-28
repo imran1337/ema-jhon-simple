@@ -83,7 +83,7 @@ const BtnAndFeaturesContainer = (props) => {
             </button>
           )}
         </div>
-        {features.length ? (
+        {features?.length ? (
           <div className="features order-lg-2 ms-1">
             <h4 className="ms-3">Features</h4>
             <ol>

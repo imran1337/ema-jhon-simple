@@ -2,16 +2,44 @@ import React, { useEffect } from "react";
 import { Alert, Button, Card, Container, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { auth } from "./../../firebase";
-
+import {
+  getDatabaseCart,
+  processOrder,
+} from "./../../Resources/utilities/databaseManager";
+import { useHistory } from "react-router-dom";
 const Shipment = () => {
-  const { register, handleSubmit, errors } = useForm({ mode: "onChange" });
-  const onSubmitHandler = (data) => console.log(data);
+  const history = useHistory();
+  const { displayName, email } = auth.currentUser;
+  const { register, handleSubmit, errors, reset } = useForm({
+    mode: "onChange",
+  });
+  const onSubmitHandler = (data) => {
+    const saveCart = getDatabaseCart();
+    const shipmentDetails = {
+      displayName,
+      email,
+      saveCart,
+      shipment: data,
+      orderSubmitTime: new Date(),
+    };
+    console.log(shipmentDetails);
+    fetch("https://fierce-shelf-90636.herokuapp.com/submitOrder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(shipmentDetails),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        processOrder();
+        alert(data.msg);
+        reset();
+        history.replace("/");
+      });
+  };
 
   useEffect(() => {
     console.log(errors);
   }, [errors]);
-
-  const { displayName, email } = auth.currentUser;
 
   return (
     <Container style={{ maxWidth: "700px" }}>

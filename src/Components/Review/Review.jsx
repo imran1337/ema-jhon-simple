@@ -33,13 +33,22 @@ const Review = () => {
     //cart er data load
     const savedCart = getDatabaseCart();
     const productKeys = Object.keys(savedCart);
-    const cartProducts = productKeys.map((key) => {
-      const product = fakeData.find((pd) => pd.key === key);
-      product.quantity = savedCart[key];
-      return product;
-    });
-    setCart(cartProducts);
+    // const cartProducts = productKeys.map((key) => {
+    //   const product = fakeData.find((pd) => pd.key === key);
+    //   product.quantity = savedCart[key];
+    //   return product;
+    // });
+    // setCart(cartProducts);
+    fetch("https://fierce-shelf-90636.herokuapp.com/productsByKeys", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(productKeys),
+    })
+      .then((res) => res.json())
+      .then((data) => setCart(data))
+      .catch((err) => console.log(err));
   }, []);
+  
 
   return (
     <section className="d-flex justify-content-center">
