@@ -101,7 +101,7 @@ export const Shop = () => {
       .then((res) => res.json())
       .then((data) => setCart(data))
       .catch((err) => console.log(err));
-    console.log('useeffect runed');
+    console.log("useeffect runed");
   }, []);
 
   const handleAddProduct = (productForBtn) => {
@@ -123,33 +123,65 @@ export const Shop = () => {
     addToDatabaseCart(productForBtn.key, count);
   };
 
+  const searchProductHandler = () => {
+    const searchValue = document
+      .getElementById("searchBox")
+      .value.toString()
+      .toLowerCase()
+      .trim();
+    fetch("https://fierce-shelf-90636.herokuapp.com/searchProduct", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ searchValue }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.length) return alert("Product not found");
+        setProducts(data);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
-    <main className="d-flex justify-content-center">
-      <div className="row justify-content-center">
-        {/* Product container */}
-        <div className="col-7">
-          { products.map((pd) => {
-            return (
-              <Products
-                product={pd}
-                handleAddProduct={handleAddProduct}
-                key={pd.key}
-              ></Products>
-            );
-          })}
-        </div>
-        <div className="col-5 bl text-center">
-          {/* cart container */}
-          <div className="shop_container ">
-            <h3>Order Summary</h3>
-            <Cart cart={cart}>
-              <Link to="/review">
-                <button className="btn bg-gold b">Review Order</button>
-              </Link>
-            </Cart>
+    <>
+      <div className="d-flex justify-content-center mb-5">
+        <input
+          type="text"
+          className="form-control"
+          id="searchBox"
+          style={{ width: "100vh", maxWidth: "500px" }}
+        />
+        <button className="btn btn-primary" onClick={searchProductHandler}>
+          Search
+        </button>
+      </div>
+      <main className="d-flex justify-content-center">
+        <div className="row justify-content-center">
+          {/* Product container */}
+          <div className="col-7">
+            {products.map((pd) => {
+              return (
+                <Products
+                  product={pd}
+                  handleAddProduct={handleAddProduct}
+                  key={pd.key}
+                ></Products>
+              );
+            })}
+          </div>
+          <div className="col-5 bl text-center">
+            {/* cart container */}
+            <div className="shop_container ">
+              <h3>Order Summary</h3>
+              <Cart cart={cart}>
+                <Link to="/review">
+                  <button className="btn bg-gold b">Review Order</button>
+                </Link>
+              </Cart>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 };

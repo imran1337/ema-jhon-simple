@@ -16,6 +16,7 @@ import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import PrivateRoute2 from "./Components/PrivateRoute2/PrivateRoute2";
 
 export const userContext = React.createContext();
+export const shippingDataContext = React.createContext();
 
 export default function App() {
   const [loggedInUser, setLoggedInUser] = useState({
@@ -36,12 +37,11 @@ export default function App() {
     });
   }, [setLoggedInUser]);
 
-  // useEffect(() => {
-  //   console.log(auth?.currentUser);
-  // });
+  const [shippingData, setShippingData] = useState(null);
 
   return (
     <userContext.Provider value={[loggedInUser, setLoggedInUser]}>
+    <shippingDataContext.Provider value={[shippingData, setShippingData]}>
       <Router>
         <Header />
         <Switch>
@@ -74,6 +74,7 @@ export default function App() {
           <Route path="*" component={NotFound} />
         </Switch>
       </Router>
+    </shippingDataContext.Provider>
     </userContext.Provider>
   );
 }
